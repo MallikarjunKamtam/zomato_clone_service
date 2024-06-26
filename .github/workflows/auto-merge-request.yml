@@ -1,5 +1,4 @@
-name: Auto Merge Request
-
+name: Pull Request Action
 on:
   push:
     branches:
@@ -11,15 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Check out repository code
         uses: actions/checkout@v2
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v4
+        uses: repo-sync/pull-request@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          base: main
-          head: ${{ github.ref }}
-          title: 'Auto Merge Request'
-          body: 'This is an automatically created merge request from ${{ github.ref }}'
-          branch-suffix: timestamp 
+          destination_branch: 'main'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_label: 'feature, automated pr'
+          pr_title: '[Example] Simple demo'
