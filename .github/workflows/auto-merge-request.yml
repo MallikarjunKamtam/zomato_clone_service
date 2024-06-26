@@ -22,3 +22,4 @@ jobs:
           head: ${{ github.ref }}
           title: 'Auto Merge Request'
           body: 'This is an automatically created merge request from ${{ github.ref }}'
+          branch-suffix: timestamp 
