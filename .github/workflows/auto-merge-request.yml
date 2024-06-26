@@ -1,22 +1,32 @@
-name: Pull Request Action
+name: Create Pull Request
+
 on:
   push:
     branches:
-      - 'feature/**'
-      - 'fix/**'
+      - main
 
 jobs:
-  create-pull-request:
+  create-pr:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Check out repository code
+      - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Create pull request
+      - name: Configure Git
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+
+      - name: Commit and Push Changes
+        run: |
+          git add .
+          git commit -m "Automated commit message"
+          git push origin HEAD:feature/common
+
+      - name: Create Pull Request
         uses: repo-sync/pull-request@v2
         with:
-          destination_branch: 'main'
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          pr_label: 'feature, automated pr'
-          pr_title: '[Example] Simple demo'
+          base_branch: main
+          title: Automated PR from GitHub Actions
+          body: Automated PR created by workflow.
