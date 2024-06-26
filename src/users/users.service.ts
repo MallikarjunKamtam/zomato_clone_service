@@ -1,5 +1,5 @@
 
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
@@ -30,7 +30,19 @@ export class UsersService {
       ...createUserDto,
       password_hash: hashedPassword,
     });
-    return this.usersRepository.save(newUser);
+
+
+    try {
+      return await this.usersRepository.save(newUser);
+    } catch (error) {
+      if (error.code === '23505') {
+        throw new BadRequestException('Duplicate value violates unique constraint.');
+      }
+      throw error;
+    }
+
+
+     
   }
 
 
