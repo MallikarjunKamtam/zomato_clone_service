@@ -24,7 +24,7 @@ export class RestaurantService {
   async createRestaurant(
     restaurantData: Partial<Restaurant>,
   ): Promise<Restaurant> {
-    return await this.restaurantRepository.create(restaurantData);
+    return await this.restaurantRepository.save(restaurantData);
   }
 
   async updateRestaurant(

@@ -18,11 +18,11 @@ export class ProductsService {
     return this.productRepository.findOne({ where: { id } });
   }
 
-  async create(product: Products): Promise<Products> {
+  async create(product: Partial<Products>): Promise<Products> {
     return this.productRepository.save(product);
   }
 
-  async update(id: number, product: Products): Promise<Products> {
+  async update(id: number, product: Partial<Products>): Promise<Products> {
     await this.productRepository.update(id, product);
     return this.productRepository.findOne({ where: { id } });
   }
