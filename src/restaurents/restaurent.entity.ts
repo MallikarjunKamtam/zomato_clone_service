@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 import { Products } from '../products/products.entity';
 import { BaseEntity } from 'src/common/utils/base.entity';
 
@@ -31,6 +38,7 @@ export class Restaurant extends BaseEntity {
   @Column('decimal')
   rating: number;
 
-  @OneToMany(() => Products, (product) => product.restaurant)
+  @ManyToMany(() => Products)
+  @JoinTable()
   menu: Products[];
 }

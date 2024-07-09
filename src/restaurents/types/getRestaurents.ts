@@ -2,7 +2,7 @@ export interface IGetRestaurent {
   id: number;
   name: string;
   isOpen: boolean;
-  location: string; //coardinates
+  location: string;
   phoneNumber: number;
   email: string;
   timings: {
@@ -10,7 +10,7 @@ export interface IGetRestaurent {
     close: string;
   };
   ownerName: string;
-  rating: number; // out of 5
+  rating: number;
   menu: number[];
 }
 

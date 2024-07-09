@@ -4,7 +4,7 @@ export interface IGetProducts {
   imageUrl: string;
   price: number;
   currency: string;
-  rating: number; // out of 5s
+  rating: number;
   tag: string;
 }
 

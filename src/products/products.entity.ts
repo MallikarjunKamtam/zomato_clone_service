@@ -19,9 +19,6 @@ export class Products extends BaseEntity {
   @Column('decimal')
   rating: number;
 
-  @Column()
+  @Column({ nullable: true })
   tag: string;
-
-  @ManyToOne(() => Restaurant, (restaurant) => restaurant.menu)
-  restaurant: Restaurant;
 }
