@@ -1,17 +1,9 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  BaseEntity,
-  ManyToOne,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Restaurant } from '../restaurents/restaurent.entity';
+import { BaseEntity } from 'src/common/utils/base.entity';
 
 @Entity()
 export class Products extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
   @Column()
   name: string;
 

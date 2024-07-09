@@ -32,6 +32,7 @@ import { RestaurantRepository } from './restaurents/restaurant.repository';
         database: configService.get('DB_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: false,
+        logging: true,
       }),
     }),
     TypeOrmModule.forFeature([RestaurantRepository]),
