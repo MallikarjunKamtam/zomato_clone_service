@@ -1,9 +1,17 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { Restaurant } from '../restaurents/restaurent.entity';
-import { BaseEntity } from 'src/common/utils/base.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-@Entity()
-export class Products extends BaseEntity {
+@Entity({ name: 'products' })
+export class Products {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column()
   name: string;
 
@@ -21,4 +29,10 @@ export class Products extends BaseEntity {
 
   @Column({ nullable: true })
   tag: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

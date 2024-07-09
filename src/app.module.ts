@@ -13,7 +13,6 @@ import { ProductsModule } from './products/products.module';
 import { RestaurantModule } from './restaurents/restaurents.module';
 import { RestaurantService } from './restaurents/restaurents.service';
 import { Restaurant } from './restaurents/restaurent.entity';
-import { RestaurantRepository } from './restaurents/restaurant.repository';
 
 @Module({
   imports: [
@@ -31,11 +30,11 @@ import { RestaurantRepository } from './restaurents/restaurant.repository';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: false,
+        synchronize: true,
         logging: true,
       }),
     }),
-    TypeOrmModule.forFeature([RestaurantRepository]),
+    TypeOrmModule.forFeature([Restaurant]),
     AuthModule,
     UsersModule,
     RestaurantModule,

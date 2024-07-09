@@ -1,16 +1,19 @@
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
-  OneToMany,
   ManyToMany,
   JoinTable,
+  CreateDateColumn,
+  UpdateDateColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Products } from '../products/products.entity';
-import { BaseEntity } from 'src/common/utils/base.entity';
 
-@Entity()
-export class Restaurant extends BaseEntity {
+@Entity({ name: 'restaurants' })
+export class Restaurant {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column()
   name: string;
 
@@ -41,4 +44,10 @@ export class Restaurant extends BaseEntity {
   @ManyToMany(() => Products)
   @JoinTable()
   menu: Products[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

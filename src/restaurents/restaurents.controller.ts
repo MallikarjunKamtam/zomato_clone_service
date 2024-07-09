@@ -7,11 +7,23 @@ import { Products } from 'src/products/products.entity';
 
 @Controller('restaurents')
 export class RestaurentsController {
+  constructor(private readonly restaurantService: RestaurantService) {}
+
   @Get()
   async getAllRestaurents(@Res() res) {
+    const results = await this.restaurantService.getAllRestaurants();
+
     return res.status(200).json({
       message: 'Fetched restaurents successfully!',
-      data: restaurentsList,
+      data: results,
     });
+  }
+
+  @Get(':id/products')
+  async getProductsByRestaurantId(
+    @Param('id') id: string,
+  ): Promise<Products[]> {
+    const restaurantId = parseInt(id, 10);
+    return this.restaurantService.getProductsByRestaurantId(restaurantId);
   }
 }

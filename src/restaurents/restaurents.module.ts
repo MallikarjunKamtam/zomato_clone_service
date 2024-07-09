@@ -4,12 +4,11 @@ import { Restaurant } from './restaurent.entity';
 import { Products } from '../products/products.entity';
 import { RestaurantService } from './restaurents.service';
 import { RestaurentsController } from './restaurents.controller';
-import { RestaurantRepository } from './restaurant.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([RestaurantRepository])],
+  imports: [TypeOrmModule.forFeature([Restaurant])],
   providers: [RestaurantService],
   controllers: [RestaurentsController],
-  exports: [TypeOrmModule],
+  exports: [RestaurantService],
 })
 export class RestaurantModule {}
