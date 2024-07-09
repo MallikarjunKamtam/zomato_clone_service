@@ -6,6 +6,10 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ProductsController } from './products/products.controller';
+import { RestaurentsController } from './restaurents/restaurents.controller';
+import { ProductsModule } from './products/products.module';
+import { RestaurentsModule } from './restaurents/restaurents.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -27,8 +31,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
     AuthModule,
     UsersModule,
+    ProductsModule,
+    RestaurentsModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, ProductsController, RestaurentsController],
   providers: [AppService],
 })
 export class AppModule {}
