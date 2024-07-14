@@ -40,13 +40,15 @@ export class RestaurantService {
   }
 
   async getProductsByRestaurantId(restaurantId: number): Promise<Products[]> {
-    // const restaurant =
-    //   await this.restaurantRepository.findRestaurantWithMenu(restaurantId);
-    // if (!restaurant) {
-    //   throw new Error(`Restaurant with ID ${restaurantId} not found`);
-    // }
-    // return restaurant.menu;
+    const restaurant = await this.restaurantRepository.findOne({
+      where: { id: restaurantId },
+      relations: ['menu'],
+    });
 
-    return [];
+    if (!restaurant) {
+      throw new Error(`Restaurant with id ${restaurantId} not found.`);
+    }
+
+    return restaurant.menu.map((menuProduct) => menuProduct);
   }
 }

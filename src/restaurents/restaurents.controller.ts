@@ -33,10 +33,16 @@ export class RestaurentsController {
 
   @Get(':id/products')
   async getProductsByRestaurantId(
+    @Res() res,
     @Param('id') id: string,
   ): Promise<Products[]> {
     const restaurantId = parseInt(id, 10);
-    return this.restaurantService.getProductsByRestaurantId(restaurantId);
+    const results =
+      await this.restaurantService.getProductsByRestaurantId(restaurantId);
+    return res.status(200).json({
+      message: 'Fetched restaurents successfully!',
+      data: results,
+    });
   }
 
   @Post('add-many')
