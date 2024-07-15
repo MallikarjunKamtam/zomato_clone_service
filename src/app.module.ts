@@ -14,6 +14,7 @@ import { RestaurantModule } from './restaurents/restaurents.module';
 import { RestaurantService } from './restaurents/restaurents.service';
 import { Restaurant } from './restaurents/restaurent.entity';
 import { UsersCartModule } from './cart/cart.module';
+import { UserCart } from './cart/cart.entity';
 
 @Module({
   imports: [
@@ -35,7 +36,7 @@ import { UsersCartModule } from './cart/cart.module';
         logging: true,
       }),
     }),
-    TypeOrmModule.forFeature([Restaurant]),
+    TypeOrmModule.forFeature([Restaurant, UserCart]),
     AuthModule,
     UsersModule,
     RestaurantModule,

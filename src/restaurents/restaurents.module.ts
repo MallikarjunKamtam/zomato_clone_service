@@ -5,9 +5,10 @@ import { Products } from '../products/products.entity';
 import { RestaurantService } from './restaurents.service';
 import { RestaurentsController } from './restaurents.controller';
 import { ProductsModule } from 'src/products/products.module';
+import { UserCart } from 'src/cart/cart.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Restaurant]), ProductsModule],
+  imports: [TypeOrmModule.forFeature([Restaurant, UserCart]), ProductsModule],
   providers: [RestaurantService],
   controllers: [RestaurentsController],
   exports: [RestaurantService],

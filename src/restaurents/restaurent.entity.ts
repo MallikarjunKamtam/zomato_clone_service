@@ -25,8 +25,8 @@ export class Restaurant {
   @Column()
   location: string;
 
-  @Column({ nullable: true })
-  phoneNumber: number;
+  @Column({ nullable: true, default: '9999999999' })
+  phoneNumber: string;
 
   @Column()
   email: string;
@@ -55,4 +55,9 @@ export class Restaurant {
 
   @OneToMany(() => UserCart, (usersCart) => usersCart.restaurant)
   carts: UserCart[];
+
+  @Column({
+    default: 'https://dummyimage.com/600x400/000/fff&text=RestaurantName',
+  })
+  imageUrl: string;
 }

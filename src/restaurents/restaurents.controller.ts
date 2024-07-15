@@ -6,6 +6,7 @@ import {
   Get,
   Param,
   Post,
+  Request,
   Res,
   Response,
 } from '@nestjs/common';
@@ -22,8 +23,9 @@ export class RestaurentsController {
   ) {}
 
   @Get()
-  async getAllRestaurents(@Res() res) {
-    const results = await this.restaurantService.getAllRestaurants();
+  async getAllRestaurents(@Res() res, @Request() req) {
+    const userId: number = req?.headers?.['user']?.['userId'] ?? 1; // todo
+    const results = await this.restaurantService.getAllRestaurants(userId);
 
     return res.status(200).json({
       message: 'Fetched restaurents successfully!',
