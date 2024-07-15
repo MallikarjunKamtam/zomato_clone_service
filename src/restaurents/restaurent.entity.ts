@@ -23,7 +23,7 @@ export class Restaurant {
   @Column()
   location: string;
 
-  @Column()
+  @Column({ nullable: true })
   phoneNumber: number;
 
   @Column()

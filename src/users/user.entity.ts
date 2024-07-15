@@ -1,9 +1,11 @@
+import { UserCart } from 'src/cart/cart.entity';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity({ name: 'users' })
@@ -25,4 +27,7 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => UserCart, (usersCart) => usersCart.user)
+  carts: UserCart[];
 }
