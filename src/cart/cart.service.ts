@@ -16,11 +16,7 @@ export class UsersCartService {
     private productRepository: Repository<Products>,
   ) {}
 
-  async addProductToCart(
-    userId: number,
-    productId: number,
-    quantity: number,
-  ): Promise<UserCart> {
+  async addProductToCart(userId: number, productId: number): Promise<UserCart> {
     const user = await this.userRepository.findOne({ where: { id: userId } });
     const product = await this.productRepository.findOne({
       where: { id: productId },
@@ -35,7 +31,7 @@ export class UsersCartService {
     });
 
     if (existingCartItem) {
-      existingCartItem.quantity += quantity;
+      existingCartItem.quantity += 1; // making api call for each click on add to cart button so its 1
       return this.usersCartRepository.save(existingCartItem);
     }
 
@@ -44,8 +40,52 @@ export class UsersCartService {
       product,
       userId,
       productId,
-      quantity,
+      quantity: 1, // making api call for each click on add to cart button so its 1
     });
-    return this.usersCartRepository.save(newCartItem);
+    return await this.usersCartRepository.save(newCartItem);
+  }
+
+  async removeFromCart(userId: number, productId: number): Promise<UserCart> {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    const product = await this.productRepository.findOne({
+      where: { id: productId },
+    });
+
+    if (!user || !product) {
+      throw new Error('User or Product not found');
+    }
+
+    const existingCartItem = await this.usersCartRepository.findOne({
+      where: { userId, productId },
+    });
+
+    if (!existingCartItem) {
+      throw new Error('Cart is already empty');
+    }
+
+    if (existingCartItem.quantity > 1) {
+      existingCartItem.quantity -= 1; // making api call for each click on add to cart button so its 1
+      return this.usersCartRepository.save(existingCartItem);
+    }
+
+    await this.usersCartRepository.delete(existingCartItem.id);
+  }
+
+  async getCartItemsForUser(userId: number): Promise<UserCart> {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const existingCartItem = await this.usersCartRepository.findOne({
+      where: { userId },
+    });
+
+    if (!existingCartItem) {
+      return null;
+    }
+
+    return existingCartItem;
   }
 }
