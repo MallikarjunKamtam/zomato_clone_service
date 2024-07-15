@@ -1,4 +1,5 @@
 import { Products } from 'src/products/products.entity';
+import { Restaurant } from 'src/restaurents/restaurent.entity';
 import { User } from 'src/users/user.entity';
 import {
   Column,
@@ -27,6 +28,13 @@ export class UserCart {
   @JoinColumn({ name: 'productId' })
   product: Products;
 
+  @ManyToOne(() => Restaurant, (restaurant) => restaurant.carts)
+  @JoinColumn({ name: 'restaurantId' })
+  restaurant: Restaurant;
+
   @Column()
   productId: number;
+
+  @Column()
+  restaurantId: number;
 }
