@@ -15,6 +15,8 @@ import { RestaurantService } from './restaurents/restaurents.service';
 import { Restaurant } from './restaurents/restaurent.entity';
 import { UsersCartModule } from './cart/cart.module';
 import { UserCart } from './cart/cart.entity';
+import { StripeController } from './stripe/stripe.controller';
+import { StripeModule } from './stripe/stripe.module';
 
 @Module({
   imports: [
@@ -42,8 +44,14 @@ import { UserCart } from './cart/cart.entity';
     RestaurantModule,
     ProductsModule,
     UsersCartModule,
+    StripeModule,
   ],
-  controllers: [AppController, RestaurentsController, ProductsController],
+  controllers: [
+    AppController,
+    RestaurentsController,
+    ProductsController,
+    StripeController,
+  ],
   providers: [RestaurantService, AppService],
 })
 export class AppModule {}
