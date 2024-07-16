@@ -4,16 +4,17 @@ import {
   SignUpCommand,
   InitiateAuthCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
+import { cognitoConfig } from './config';
 
 @Injectable()
 export class CognitoService {
   private client = new CognitoIdentityProviderClient({
-    region: 'YOUR_AWS_REGION',
+    region: cognitoConfig.region,
   });
 
   async signUp(username: string, password: string) {
     const command = new SignUpCommand({
-      ClientId: 'YOUR_APP_CLIENT_ID',
+      ClientId: cognitoConfig.clientId,
       Username: username,
       Password: password,
     });
@@ -23,7 +24,7 @@ export class CognitoService {
   async signIn(username: string, password: string) {
     const command = new InitiateAuthCommand({
       AuthFlow: 'USER_PASSWORD_AUTH',
-      ClientId: 'YOUR_APP_CLIENT_ID',
+      ClientId: cognitoConfig.clientId,
       AuthParameters: {
         USERNAME: username,
         PASSWORD: password,

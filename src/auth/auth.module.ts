@@ -12,8 +12,8 @@ import { CognitoService } from './cognito/cognito.service';
     UsersModule,
     PassportModule,
     JwtModule.register({
-      secret: 'your_jwt_secret_key', // TODO: ADD ENV VARIABLE HERE
-      signOptions: { expiresIn: '60m' }, // TODO: ADD ENV VARIABLE
+      secret: process.env.JWT_SECRET_KEY,
+      signOptions: { expiresIn: '60m' },
     }),
   ],
   providers: [AuthService, JwtStrategy, CognitoService],
