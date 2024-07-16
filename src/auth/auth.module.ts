@@ -18,5 +18,6 @@ import { CognitoService } from './cognito/cognito.service';
   ],
   providers: [AuthService, JwtStrategy, CognitoService],
   controllers: [AuthController],
+  exports: [AuthService],
 })
 export class AuthModule {}

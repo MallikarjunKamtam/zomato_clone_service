@@ -19,6 +19,11 @@ import { StripeModule } from './stripe/stripe.module';
 import { MyLoggerService } from './common/logger/logger.service';
 import { LoggerMiddleware } from './common/logger/logger.middleware';
 import { CognitoService } from './auth/cognito/cognito.service';
+import { AuthController } from './auth/auth.controller';
+import { JwtStrategy } from './auth/jwt.strategy';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -41,6 +46,10 @@ import { CognitoService } from './auth/cognito/cognito.service';
       }),
     }),
     TypeOrmModule.forFeature([Restaurant, UserCart]),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET_KEY,
+      signOptions: { expiresIn: '60m' },
+    }),
     AuthModule,
     UsersModule,
     RestaurantModule,
@@ -49,12 +58,23 @@ import { CognitoService } from './auth/cognito/cognito.service';
     StripeModule,
   ],
   controllers: [
+    AuthController,
     AppController,
     RestaurentsController,
     ProductsController,
     StripeController,
   ],
-  providers: [MyLoggerService, RestaurantService, AppService, CognitoService],
+  providers: [
+    MyLoggerService,
+    RestaurantService,
+    AppService,
+    CognitoService,
+    JwtStrategy,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
