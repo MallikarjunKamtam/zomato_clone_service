@@ -18,6 +18,7 @@ import { StripeModule } from './stripe/stripe.module';
 
 import { MyLoggerService } from './common/logger/logger.service';
 import { LoggerMiddleware } from './common/logger/logger.middleware';
+import { CognitoService } from './auth/cognito/cognito.service';
 
 @Module({
   imports: [
@@ -53,7 +54,7 @@ import { LoggerMiddleware } from './common/logger/logger.middleware';
     ProductsController,
     StripeController,
   ],
-  providers: [MyLoggerService, RestaurantService, AppService],
+  providers: [MyLoggerService, RestaurantService, AppService, CognitoService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

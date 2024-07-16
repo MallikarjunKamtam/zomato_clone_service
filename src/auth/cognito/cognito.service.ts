@@ -3,6 +3,8 @@ import {
   CognitoIdentityProviderClient,
   SignUpCommand,
   InitiateAuthCommand,
+  GlobalSignOutCommand,
+  AdminUserGlobalSignOutCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { cognitoConfig } from './config';
 
@@ -31,5 +33,34 @@ export class CognitoService {
       },
     });
     return await this.client.send(command);
+  }
+
+  async signOut(accessToken: string) {
+    const command = new GlobalSignOutCommand({
+      AccessToken: accessToken,
+    });
+
+    try {
+      const response = await this.client.send(command);
+      return response;
+    } catch (error) {
+      console.error('Error signing out:', error);
+      throw error;
+    }
+  }
+
+  async adminSignOut(username: string) {
+    const command = new AdminUserGlobalSignOutCommand({
+      UserPoolId: cognitoConfig.userPoolId,
+      Username: username,
+    });
+
+    try {
+      const response = await this.client.send(command);
+      return response;
+    } catch (error) {
+      console.error('Error signing out user:', error);
+      throw error;
+    }
   }
 }

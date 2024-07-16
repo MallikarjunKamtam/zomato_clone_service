@@ -1,4 +1,11 @@
-import { Controller, Request, Post, UseGuards, Body } from '@nestjs/common';
+import {
+  Controller,
+  Request,
+  Post,
+  UseGuards,
+  Body,
+  Req,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './local-auth.guard';
 
@@ -27,6 +34,30 @@ export class AuthController {
       return { message: 'User confirmed successfully. You can now sign in.' };
     } catch (error) {
       console.error('Error during confirmation:', error);
+      throw error;
+    }
+  }
+
+  @Post('signout')
+  async signOut(@Req() request) {
+    const accessToken = request.headers.authorization.split(' ')[1];
+    try {
+      await this.authService.signOut(accessToken);
+      return { message: 'Successfully signed out.' };
+    } catch (error) {
+      console.error('Error during sign-out:', error);
+      throw error;
+    }
+  }
+
+  @Post('admin/signout')
+  async adminSignOut(@Body() body) {
+    const { username } = body;
+    try {
+      await this.authService.adminSignOut(username);
+      return { message: 'User successfully signed out.' };
+    } catch (error) {
+      console.error('Error during admin sign-out:', error);
       throw error;
     }
   }

@@ -6,12 +6,13 @@ import {
   ConfirmSignUpCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { cognitoConfig } from './cognito/config';
+import { CognitoService } from './cognito/cognito.service';
 
 @Injectable()
 export class AuthService {
   private client: CognitoIdentityProviderClient;
 
-  constructor() {
+  constructor(private cognitoService: CognitoService) {
     this.client = new CognitoIdentityProviderClient({
       region: cognitoConfig.region,
     });
@@ -47,5 +48,13 @@ export class AuthService {
     });
     const response = await this.client.send(command);
     return response.AuthenticationResult;
+  }
+
+  async signOut(accessToken: string) {
+    return await this.cognitoService.signOut(accessToken);
+  }
+
+  async adminSignOut(username: string) {
+    return await this.cognitoService.adminSignOut(username);
   }
 }
