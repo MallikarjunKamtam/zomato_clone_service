@@ -70,4 +70,13 @@ export class UsersCartController {
     );
     return res.status(200).json({ data, message: 'fetched successfully' });
   }
+
+  @Post('/reset-cart')
+  async resetCartForUser(@Request() req, @Response() res) {
+    const userId: number = req?.headers?.['user']?.['userId'] ?? 1; // todo
+
+    await this.usersCartService.resetCartForUser(userId);
+
+    return res.status(200).json({ message: 'success' });
+  }
 }

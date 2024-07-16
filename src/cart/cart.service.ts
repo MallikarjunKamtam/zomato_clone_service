@@ -117,4 +117,8 @@ export class UsersCartService {
 
     return output;
   }
+
+  async resetCartForUser(userId: number) {
+    return await this.usersCartRepository.delete({ userId });
+  }
 }
