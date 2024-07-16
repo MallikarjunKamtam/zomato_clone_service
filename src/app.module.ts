@@ -1,6 +1,4 @@
-// app.module.ts
-
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
@@ -17,6 +15,9 @@ import { UsersCartModule } from './cart/cart.module';
 import { UserCart } from './cart/cart.entity';
 import { StripeController } from './stripe/stripe.controller';
 import { StripeModule } from './stripe/stripe.module';
+
+import { MyLoggerService } from './common/logger/logger.service';
+import { LoggerMiddleware } from './common/logger/logger.middleware';
 
 @Module({
   imports: [
@@ -52,6 +53,10 @@ import { StripeModule } from './stripe/stripe.module';
     ProductsController,
     StripeController,
   ],
-  providers: [RestaurantService, AppService],
+  providers: [MyLoggerService, RestaurantService, AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}
