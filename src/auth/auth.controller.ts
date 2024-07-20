@@ -5,14 +5,20 @@ import {
   UseGuards,
   Body,
   Req,
+  Res,
+  Response,
+  HttpStatus,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './local-auth.guard';
+import { Public } from 'src/common/decorators/public.decorator';
+import { Response as ResponseType } from 'express';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Public()
   @Post('signup')
   async signUp(
     @Body() body: { username: string; password: string; email: string },
@@ -20,11 +26,28 @@ export class AuthController {
     return this.authService.signUp(body.username, body.password, body.email);
   }
 
+  @Public()
   @Post('signin')
-  async signIn(@Body() body: { username: string; password: string }) {
-    return this.authService.signIn(body.username, body.password);
+  async signIn(
+    @Body() body: { username: string; password: string },
+    @Response() res: ResponseType,
+  ) {
+    const tokens = await this.authService.signIn(body.username, body.password);
+
+    res.cookie('accessToken', tokens.AccessToken, {
+      httpOnly: true,
+      secure: true,
+    });
+    res.cookie('idToken', tokens.IdToken, { httpOnly: true, secure: true });
+    res.cookie('refreshToken', tokens.RefreshToken, {
+      httpOnly: true,
+      secure: true,
+    });
+
+    return res.status(HttpStatus.OK).json({ message: 'Sign in successful' });
   }
 
+  @Public()
   @Post('confirm')
   async confirmSignUp(@Body() body) {
     const { username, confirmationCode } = body;

@@ -24,6 +24,7 @@ import { JwtStrategy } from './auth/jwt.strategy';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { JwtModule } from '@nestjs/jwt';
+import { AuthMiddleware } from './common/middlewares/auth';
 
 @Module({
   imports: [
@@ -78,6 +79,6 @@ import { JwtModule } from '@nestjs/jwt';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('*');
+    consumer.apply(AuthMiddleware, LoggerMiddleware).forRoutes('*');
   }
 }

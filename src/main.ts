@@ -5,10 +5,13 @@ import { AppModule } from './app.module';
 import { TypeOrmExceptionFilter } from './common/filters/typeorm-exception.filter';
 import { ConfigService } from '@nestjs/config';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api/v1');
+
+  app.use(cookieParser());
 
   const corsOptions: CorsOptions = {
     origin: 'http://localhost:3000',
