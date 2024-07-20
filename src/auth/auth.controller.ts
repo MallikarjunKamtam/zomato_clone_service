@@ -26,14 +26,11 @@ export class AuthController {
     return this.authService.signUp(body.username, body.password, body.email);
   }
 
-  @Public()
-  @Post('signin')
-  async signIn(
+  @Public() @Post('signin') async signIn(
     @Body() body: { username: string; password: string },
     @Response() res: ResponseType,
   ) {
     const tokens = await this.authService.signIn(body.username, body.password);
-
     res.cookie('accessToken', tokens.AccessToken, {
       httpOnly: true,
       secure: true,
@@ -43,10 +40,8 @@ export class AuthController {
       httpOnly: true,
       secure: true,
     });
-
     return res.status(HttpStatus.OK).json({ message: 'Sign in successful' });
   }
-
   @Public()
   @Post('confirm')
   async confirmSignUp(@Body() body) {
@@ -63,7 +58,7 @@ export class AuthController {
 
   @Post('signout')
   async signOut(@Req() request) {
-    const accessToken = request.headers.authorization.split(' ')[1];
+    const accessToken = request.cookies['accessToken'];
     try {
       await this.authService.signOut(accessToken);
       return { message: 'Successfully signed out.' };

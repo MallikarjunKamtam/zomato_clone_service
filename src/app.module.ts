@@ -1,4 +1,9 @@
-import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
+import {
+  Module,
+  MiddlewareConsumer,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
@@ -24,7 +29,6 @@ import { JwtStrategy } from './auth/jwt.strategy';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthMiddleware } from './common/middlewares/auth';
 
 @Module({
   imports: [
@@ -50,6 +54,7 @@ import { AuthMiddleware } from './common/middlewares/auth';
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY,
       signOptions: { expiresIn: '60m' },
+      verifyOptions: { algorithms: ['RS256'] },
     }),
     AuthModule,
     UsersModule,
@@ -79,6 +84,12 @@ import { AuthMiddleware } from './common/middlewares/auth';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware, LoggerMiddleware).forRoutes('*');
+    consumer
+      .apply(LoggerMiddleware)
+      .exclude(
+        { path: 'auth/signin', method: RequestMethod.POST }, // Exclude the login route
+        { path: 'auth/signup', method: RequestMethod.POST }, // Exclude the signup route if needed
+      )
+      .forRoutes('*');
   }
 }
