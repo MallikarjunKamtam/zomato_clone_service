@@ -8,3 +8,12 @@ async function bootstrap() {
   await app.listen(4000); // TODO : NEED TO CHANGE 4000 to Config PORT
 }
 bootstrap();
+
+/*
+TODO LIST
+
+- SQS
+- EC2
+
+
+*/
